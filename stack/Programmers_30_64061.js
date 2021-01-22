@@ -48,4 +48,43 @@ function solution(board, moves) {
 
 
 ///////////////////////////////////////////
-//2. 
+//2. 배열의 row와 column을 전환한 뒤 인형이 존재하는 부분만 filtering 후 진행
+const transpose = (matrix) => { //row <-> column
+    return matrix.reduce((acc, row, idx) => {
+        return row.map((value, idx, arr) => {
+            return [...(acc[idx] || []), row[idx]]
+        })
+    }, [])
+}
+
+const checkCombo = (stack) => {
+    let comboCnt = 0;
+    while(stack.length > 1){ //stack에 넣은 후 인형이 연속되는 부분 제거
+        if(stack[stack.length-1] === stack[stack.length-2]){
+            stack.pop();
+            stack.pop();
+            comboCnt++;
+        }else{
+            break;
+        }
+    }
+    return comboCnt * 2;
+}
+
+function solution(board, moves) {
+    const stack = [];
+    let result = 0;
+    const rows = transpose(board).map((row, idx) => row.filter( (el) => el!==0) //인형 없는 칸 제외
+    );
+
+    moves.forEach(value => {
+        let doll = rows[value-1].shift();
+        if(!doll){
+            return;
+        }
+        stack.push(doll);
+        result += checkCombo(stack);
+    });
+
+    return result;
+}
