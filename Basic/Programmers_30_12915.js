@@ -1,4 +1,4 @@
-//https://programmers.co.kr/learn/courses/30/lessons/12910?language=javascript
+//https://programmers.co.kr/learn/courses/30/lessons/12915?language=javascript
 ////////////////////////
 //1. Sort할 때 n번째 문자를 우선으로 보고 같다면 사전정렬상으로 비교한다.
 function solution(strings, n) {
