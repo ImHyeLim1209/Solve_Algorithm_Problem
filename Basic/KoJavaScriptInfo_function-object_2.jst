@@ -1,0 +1,25 @@
+//https://ko.javascript.info/function-object
+/*
+sum(1)(2) == 3; // 1 + 2
+sum(1)(2)(3) == 6; // 1 + 2 + 3
+sum(5)(-1)(2) == 6
+sum(6)(-1)(-2)(-3) == 0
+sum(0)(1)(2)(3)(4)(5) == 15
+
+//이것도 된다.
+let x = sum(1)(2);
+x+1 = 4 //함수 + 1을 하면 x가 string 값으로 예상되는 방식으로 참조되므로 toString()이 호출된다. 이 때 toString()을 재정의하였으므로 counter 값(Number)이 리턴된다.
+*/
+
+function sum(a){
+  let counter = a;
+  function aux(value) {
+    counter += value;
+    return aux;
+  }
+
+  aux.toString = () => (counter); //함수의 결과가 함수인데 toString()을 재정의 하여 함수를 갖고 사칙연산을 하는 등 문자열이 예상되는 연산을 수행 시 counter 값을 받을 수 있다.
+  return aux; //기존 값을 계속 더해나가는 함수를 리턴한다.
+}
+
+//.toString() : 텍스트 값으로 표시되거나 객체가 문자열이 예상되는 방식으로 참조 될 때 자동으로 호출
