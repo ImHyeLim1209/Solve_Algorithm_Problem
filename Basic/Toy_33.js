@@ -148,3 +148,28 @@ const LIS = function (arr) {
   // 가장 긴 길이를 구한다.
   return Math.max(...memo);
 };
+
+//메모이제이션 2-1. 원래 메모이제이션을 이해하기 쉽게 넣은 것. 2-1 -> 2로 순으로 보면 2 코드가 이해감
+const LIS = function (arr) {
+  const memo = Array(arr.length).fill(-1);
+  memo[memo.length - 1] = 1;
+
+  const calculateLIS = (idx) => {
+    if (memo[idx] !== -1) return memo[idx];
+
+    for (let i = idx + 1; i < arr.length; i++) {
+      const result = calculateLIS(i);
+      if (arr[idx] < arr[i]) {
+        memo[idx] = Math.max(memo[idx], result + 1);
+      }
+      
+      if (memo[idx] === -1) { //위 조건에 걸리지 않는 경우 -1로 남아버리므로 강제로 1을 준다.
+        memo[idx] = 1;
+      }
+    }
+    return memo[idx];
+  }
+
+  calculateLIS(0);
+  return Math.max(...memo);
+};
