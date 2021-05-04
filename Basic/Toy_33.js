@@ -79,6 +79,29 @@ const LIS = function (arr) {
   return max; //길이 순서대로 구하므로 마지막 요소가 무조건 가장 크다
 };
 
+//리팩토링3: 하나의 숫자를 시작으로 하고 끝까지 찾아나간다. 테스트케이스는 모두 통과하지만 Advanced에서는 npm ERR! Test failed 나는 것 같음.
+const LIS = function (arr) {
+  const LISs = [];
+
+  const aux = (acc, candidate) => {
+    if (candidate.length === 0) {
+      LISs.push(acc.length);
+      return;
+    }
+
+    for (let i = 0; i < candidate.length; i++) {
+      if (acc.length === 0 || acc[acc.length - 1] < candidate[i]) {
+        aux(acc.concat(candidate[i]), candidate.slice(i + 1));
+      } else {
+        aux(acc, candidate.slice(i + 1));
+      }
+    }
+  }
+
+  aux([], arr);
+  return Math.max(...LISs);
+};
+
 //레퍼런스: 가장 큰 숫자를 하나 정하고 그 숫자를 기준으로 앞의 숫자를 찾는다.
 const LIS = function (arr) {
   const N = arr.length;
@@ -96,4 +119,32 @@ const LIS = function (arr) {
     }
   }
   return Math.max(...lis);
+};
+
+//레퍼런스2: 메모이제이션을 이용한다. 뒤부터 구하기
+const LIS = function (arr) {
+  // memo[i]는 i부터 시작하는 LIS의 길이를 저장
+  const memo = Array(arr.length).fill(-1);
+  // 마지막 요소부터 시작하는 LIS는 1이 유일하다.
+  memo[memo.length - 1] = 1;
+  const calculateLIS = (idx) => {
+    if (memo[idx] !== -1) return memo[idx];
+
+    let max = 1;
+    for (let i = idx + 1; i < arr.length; i++) {
+      const len = calculateLIS(i);
+      // idx와 i가 연결되지 않을 수도 있다.
+      if (arr[idx] < arr[i]) {
+        // i부터 시작하는 LIS를 연결할 수 있는 경우
+        max = Math.max(max, len + 1);
+      }
+      // i부터 시작하는 LIS가 더 길 수도 있다.
+      // idx부터 시작하는 LIS를 구해야 하므로, 무시한다.
+    }
+    memo[idx] = max;
+    return memo[idx];
+  };
+  calculateLIS(0);
+  // 가장 긴 길이를 구한다.
+  return Math.max(...memo);
 };
