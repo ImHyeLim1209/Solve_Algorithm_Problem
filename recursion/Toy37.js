@@ -69,7 +69,19 @@ const coinChange = function (total, coins) {
   return aux(total, 0);
 };
 
-//리팩토링3: memoization reference
+//방법2: 현재 코인제외하고 진행 + 현재 코인을 포함하고 진행 
+const coinChange = function (total, coins) {
+  const aux = (left, idx) => {
+    if (left === 0) return 1;
+    if (left < 0) return 0;
+    if (idx >= coins.length && left > 0) return 0;
+
+    return aux(left, idx + 1) + aux(left - coins[idx], idx);
+  }
+  return aux(total, 0);
+};
+
+//방법2 리팩토링: memoization reference
 const coinChange = function (total, coins) {
   const memo = [];
   for (let i = 0; i < total + 1; i++) memo.push(Array(coins.length).fill(-1));
