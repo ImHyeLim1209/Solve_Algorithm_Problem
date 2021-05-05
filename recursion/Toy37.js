@@ -56,6 +56,9 @@ const coinChange = function (total, coins) {
     }
 
     for (let i = idx; i < coins.length; i++) {
+      if (left === total && i === 1) { //total 목표치의 경우 idx가 변하지 않으므로 강제로 따로 넣어주어야함(없어도 정답인 3에는 지장 없음)
+        memo[left][i] += aux(left - coins[i], i);
+      }
       if (left - coins[i] >= 0) {
         memo[left][idx] += aux(left - coins[i], i);
       }
