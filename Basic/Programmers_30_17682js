@@ -1,0 +1,67 @@
+//https://programmers.co.kr/learn/courses/30/lessons/17682
+
+//제출답안
+function solution(dartResult) {
+  const scores = [];
+  const bonuses = ['S', 'D', 'T'];
+  const options = ['*', '#'];
+
+  let score = 0;
+  let beforeChar = '';
+  for (const char of dartResult) {
+    if (bonuses.includes(char)) {
+      score = Math.pow(score, bonuses.indexOf(char) + 1);
+    } else if (options.includes(char)) {
+      if (char === '#') score *= -1;
+      else {
+        scores[scores.length - 1] *= 2;
+        score *= 2;
+      }
+    } else {
+      if (/\d/.test(beforeChar)) {
+        score = parseInt(beforeChar + char);
+      } else {
+        scores.push(score);
+        score = parseInt(char);
+      }
+    }
+    beforeChar = char;
+  }
+  scores.push(score);
+  return scores.reduce((acc, cur) => acc + cur);
+}
+
+//리팩토링: 정규표현식 및 해시 사용. option 부분 분해
+function solution(dartResult) {
+  const scores = [];
+  const bonuses = { 'S': 1, 'D': 2, 'T': 3 };
+
+  let score = 0;
+  let beforeChar = '';
+  for (const char of dartResult) {
+    if (/[SDT]/.test(char)) {
+      score = Math.pow(score, bonuses[char]);
+    } else if (char === '#') {
+      score *= -1
+    } else if (char === '*') {
+      scores[scores.length - 1] *= 2;
+      score *= 2;
+    } else {
+      if (/\d/.test(beforeChar)) {
+        score = parseInt(beforeChar + char);
+      } else {
+        scores.push(score);
+        score = parseInt(char);
+      }
+    }
+    beforeChar = char;
+  }
+  scores.push(score);
+  return scores.reduce((acc, cur) => acc + cur);
+}
+
+
+
+
+
+
