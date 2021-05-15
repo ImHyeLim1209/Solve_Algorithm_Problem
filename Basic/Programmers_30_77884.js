@@ -32,3 +32,19 @@ function solution(left, right) {
   }
   return answer;
 }
+
+//레퍼런스?
+//소인수분해했을 때 제곱수(?) + 1끼리의 곱이 약수의 갯수이다.
+//예를들어 12는 2^2 * 3^1 이므로 6개의 약수를 갖고있다.
+//제곱으로 딱 나누어 떨어진다는 것은 어떤 수의 2,4,6,8... 제곱이라는 의미이므로 무조건 홀수 개의 약수를 갖는다.
+function solution(left, right) {
+    var answer = 0;
+    for (let i = left; i <= right; i++) {
+        if (Number.isInteger(Math.sqrt(i))) {
+            answer -= i;
+        } else {
+            answer += i;
+        }
+    }
+    return answer;
+}
