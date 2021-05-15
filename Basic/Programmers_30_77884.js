@@ -1,12 +1,10 @@
 //https://programmers.co.kr/learn/courses/30/lessons/77884
 
 //테스트 2,3,5 통과 못함: memoization
-//4의 약수 갯수를 구했다면 2의 배수인 8, 12, 16에서는 4의 약수 갯수 + x가 된다.
-//start에 1이 포함된 것과 포함되지 않은 것을 일반화 하지 못 함
-//
+//left가 아닌 1부터 모든 약수를 구해야 함 (ex. 10~20일 때 20은 10의 배수(1,2,5)지만 4의 배수이기도 함
 function solution(left, right) {
   let answer = 0;
-  const memo = Array(right + 1).fill(0);
+  const memo = Array(right + 1).fill(0); //1을 제외한 약수 갯수 넣기
   const getDivisor = (start, end, num) => {
     let divisorCnt = 0;
     for (let i = start; i <= end / 2; i++) {
@@ -16,20 +14,21 @@ function solution(left, right) {
   }
 
   const saveMemo = (num, value) => {
+    if (num === 1) return;
     for (let i = num; i <= right; i += num) {
       memo[i] += value;
     }
   }
 
-  for (let i = left; i <= right; i++) {
+  for (let i = 1; i <= right; i++) {
     let cnt = 0;
     if (memo[i]) {
       cnt = 1;
     } else {
-      cnt = getDivisor(1, i, i);
+      cnt = getDivisor(2, i, i);
     }
     saveMemo(i, cnt);
-    memo[i] % 2 === 0 ? answer += i : answer -= i;
+    i >= left && (memo[i] + 1) % 2 === 0 ? answer += i : answer -= i;
   }
   return answer;
 }
