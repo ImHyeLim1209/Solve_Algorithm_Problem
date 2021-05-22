@@ -63,3 +63,45 @@ function solution(m, musicinfos) {
   }
   return result[0];
 }
+
+
+//새로운 답안: 두 글자가 하나의 값인 경우 두 글자를 사용하지 않는 또 다른 한 글자로 치환한다.
+function solution(m, musicinfos) {
+  let result = ["(None)", 0];
+  const hash = { "C#": "c", "D#": "d", "E#": "e", "F#": "f", "G#": "g", "A#": "a", "B#": "b" };
+
+  const convertMelody = (sounds) => {
+
+    return sounds.match(/[A-G]#*/g).map((sound) => hash[sound] ? hash[sound] : sound).join('');
+  }
+
+  const getMinutes = (start, end) => {
+    const ONEHOUR = 60;
+    const [startH, startM] = start.split(':');
+    const [endH, endM] = end.split(':');
+
+    let min = endM - startM;
+    let hour = endH - startH;
+    if (min < 0) {
+      min += ONEHOUR;
+      hour -= 1;
+    }
+    return hour * ONEHOUR + min;
+  }
+
+  const getTotalSound = (sounds, totalMin) => {
+    return sounds.repeat(parseInt(totalMin / sounds.length)) + sounds.slice(0, totalMin % sounds.length);
+  }
+
+  const melody = convertMelody(m);
+
+  for (const musicinfo of musicinfos) {
+    const [start, end, title, sounds] = musicinfo.split(',');
+    const totalMin = getMinutes(start, end);
+    const totalSound = getTotalSound(convertMelody(sounds), totalMin);
+    if (totalSound.includes(melody) && totalMin > result[1]) result = [title, totalMin];
+
+  }
+
+  return result[0];
+}
