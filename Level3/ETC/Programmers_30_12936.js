@@ -14,7 +14,7 @@ function solution(n, k) {
   }
 
   const expressFactorial = (N, k) => {
-    for (let i = 0; i < N - 2; i++) {
+    for (let i = 0; i < N - 1; i++) {
       const facNum = getFactorial(N - i - 1)
       const quo = parseInt((k - 1) / facNum);
       answer.push(quo);
@@ -34,23 +34,21 @@ function solution(n, k) {
     return -1;
   }
 
-  const remainArr = (left) => {
-    const result = [];
+  const remainNum = () => {
     for (let i = 0; i < arr.length; i++) {
-      if (!arr[i]) result.push(i);
+      if (!arr[i]) return i;
     }
-    return left === 1 ? result : result.reverse();
+    return -1;
   }
 
-  const left = expressFactorial(n, k);
+  expressFactorial(n, k);
   answer = answer.map((idx) => getValidNumByIdx(idx + 1));
-  answer = answer.concat(remainArr(left));
-  return answer;
+  return [...answer, remainNum()];
 }
 
 //다른 답안
 function solution(n, k) {
-  const answer = [];
+  let answer = [];
   const memoFactorial = {
     0: 1,
     1: 1
@@ -65,7 +63,7 @@ function solution(n, k) {
 
   let arr = new Array(n).fill().map((_, i) => i + 1);
   while (n > 0) {
-    let fac = factorial(n) / n;
+    let fac = factorial(n - 1);
     answer.push(...arr.splice(Math.floor((k - 1) / fac), 1));
     n--;
     k -= fac * Math.floor((k - 1) / fac);
