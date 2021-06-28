@@ -26,3 +26,19 @@ function solution(s) {
       return [...acc, newChar]; //push로 안하고 spreadoperator로 할 수 있다!
     }, []);
 }
+
+//새롭게 푼 풀이방법: 초기에 sort하지 않고 등장 횟수 hash를 만들어서 등장횟수가 많은 key부터 출력한다.
+function solution2(s) {
+  const hash = s
+    .match(/[\d,]+/g)
+    .reduce((acc, cur, idx) => {
+      if (idx % 2 !== 0) return acc;
+      const nums = cur.split(',').map(Number);
+      nums.forEach((num) => {
+        acc[num] = acc[num] ? acc[num] + 1 : 1;
+      });
+      return acc;
+    }, {});
+
+  return Object.keys(hash).sort((key1, key2) => hash[key2] - hash[key1]).map(Number);
+}
