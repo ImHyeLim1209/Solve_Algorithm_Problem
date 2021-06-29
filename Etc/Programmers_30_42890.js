@@ -47,10 +47,7 @@ function solution(relation) {
     }
 
     for (let i = values[values.length - 1] + 1 || 0; i < N; i++) {
-      if (values.length === 0) {
-        queue.enqueue([...values, i]);
-      }
-      else if (!values.includes(i) && isMinimality([...values, i])) {
+      if (values.length === 0 || isMinimality([...values, i])) {
         queue.enqueue([...values, i]);
       }
     }
@@ -69,7 +66,14 @@ function solution(relation) {
     for(let i = 1; i < check; i++){
         //각 컬럼과 i(0001~1111)을 &연산 하여 1이 있는 컬럼의 값들만 가져와서 join한다.
         //즉, 후보키에 따른 값들을 string으로 합친 것
-        let temp = relation.map(x=>x.filter((_,index)=>i & (1<<index)).join("")); //비트연산자 &는 둘 다 1일 때 1을 리턴한다. ex. 101 & 100 = 100
+        //let temp = relation.map(x=>x.filter((_,index)=>i & (1<<index)).join("")); //비트연산자 &는 둘 다 1일 때 1을 리턴한다. ex. 101 & 100 = 100
+      
+        //filtering 자세히
+        //index가 1이라면 0010
+        const results = relation.map((values) => values.filter((_, idx) => {
+          if (i & (1 << idx)) return true;
+          return false;
+        }));  
         const set  = new Set(temp); //중복을 제거
 
         if(temp.length === set.size) answer.add(i); //중복 제거 전 후가 동일하다면 후보키가 맞다.
