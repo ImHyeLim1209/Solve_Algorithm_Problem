@@ -105,3 +105,42 @@ function solution(m, musicinfos) {
 
   return result[0];
 }
+
+// 최근에 만든 코드. 조금 더 체계적이다.
+function solution(m, musicinfos) {
+  let answer = [["(None)", 0]];
+  const hash = { "C#": "c", "D#": "d", "E#": "e", "F#": "f", "G#": "g", "A#": "a", "B#": "b" };
+
+  const covertMelody = (m) => {
+    return m.replace(/\w#/g, str => hash[str]);
+  }
+
+  const makePlayTime = (startTime, endTime) => {
+    const HOUR = 60;
+    const [startHour, startMin] = startTime.split(':');
+    const [endHour, endMin] = endTime.split(':');
+
+    const hour = (endHour - startHour) * HOUR;
+    const min = (endMin - startMin);
+
+    return hour + min;
+  }
+
+  const makeFullMusic = (playTime, music) => {
+    if (playTime < music.length) return music.slice(0, playTime + 1);
+    const repeatNum = Math.floor(playTime / music.length);
+    const rest = playTime % music.length;
+    return music.repeat(repeatNum) + music.slice(0, rest);
+  }
+
+  const melody = covertMelody(m);
+
+  for (const musicInfo of musicinfos) {
+    const [startTime, endTime, title, music] = musicInfo.split(",");
+    const playTime = makePlayTime(startTime, endTime);
+    const fullMusic = makeFullMusic(playTime, covertMelody(music));
+    if (fullMusic.includes(melody)) answer.push([title, playTime]);
+  }
+
+  return answer.sort((a, b) => b[1] - a[1])[0][0];
+}
