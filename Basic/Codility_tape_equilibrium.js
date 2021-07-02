@@ -4,7 +4,7 @@
 function solution(A) {
   let left = 0;
   let right = A.reduce((acc, cur) => acc + cur, 0);
-  let min = Number.MAX_SAFE_INTEGER;
+  let min = Number.MAX_SAFE_INTEGER; //0위치는 후보가 아니기 때문에 최대 숫자로 넣는다.
   for (let p = 1; p < A.length; p++) {
     left += A[p - 1];
     right -= A[p - 1];
