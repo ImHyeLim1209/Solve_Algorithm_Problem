@@ -21,3 +21,12 @@ function solution(A, K) {
     }
     return result;
 }
+
+// rotate 살짝 개선 버전
+const rotate = (arr) => {
+    const result = [arr[arr.length - 1]];
+    for (let i = 0; i < arr.length - 1; i++) {
+      result.push(arr[i]);
+    }
+    return result;
+  }
