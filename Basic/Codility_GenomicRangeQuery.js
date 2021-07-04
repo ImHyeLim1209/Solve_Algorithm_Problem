@@ -31,3 +31,24 @@ function solution(S, P, Q) {
 
   return result;
 }
+
+//답안3 -> 2와 유사하지만 시간초과
+//답안 2는 직접 slice 치고 찾기 때문에 더 오래걸릴 것 이라 생각했으나 의외로 그렇지 않음
+//시간 초과가 발생했을 때 내장 함수를 이용하는 것이 더 나을 수도 있다.
+function solution(S, P, Q) {
+  let result = [];
+  const isInclude = (str, target, start, end) => {
+    for (let i = start; i <= end; i++) {
+      if (str[i] === target) return true;
+    }
+    return false;
+  }
+
+  for (let i = 0; i < P.length; i++) {
+    if (isInclude(S, "A", P[i], Q[i])) result.push(1);
+    else if (isInclude(S, "C", P[i], Q[i])) result.push(2);
+    else if (isInclude(S, "G", P[i], Q[i])) result.push(3);
+    else if (isInclude(S, "T", P[i], Q[i])) result.push(4);
+  }
+  return result;
+}
