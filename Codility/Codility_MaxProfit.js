@@ -25,3 +25,19 @@ function solution(A) {
     }
     return Math.max(...profits);
 }
+
+
+// 방법2) i 시점에서 판다고 생각하고 i까지의 min 값을 기억하고 있다가 팔자.
+function solution(A) {
+  const profits = [0];
+  let min = A[0];
+
+  for (let i = 0; i < A.length; i++) {
+    const cost = A[i] - min;
+    if (cost > 0) profits.push(cost);
+    if (min > A[i]) min = A[i];
+  }
+  return Math.max(...profits);
+}
+
+// 이런 류의 문제는 for문을 판다고 생각하고 돌 것인지 산다고 생각하고 돌 것인지를 정하면 문제가 쉽게 풀릴 수도 있다...
