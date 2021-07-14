@@ -1,5 +1,5 @@
 // https://app.codility.com/programmers/lessons/4-counting_elements/perm_check/
-// 방법1) set으로 중복 제거 후 max를 잘 구해서 없는 숫자를 센다. -> has도 N 걸려서 N^2 나올듯..
+// 방법1) set으로 중복 제거 후 max를 잘 구해서 없는 숫자를 센다. -> has도 N 걸려서 N^2 나오거나, hash처럼 1 걸려서 2N
 function solution(A) {
   const set = new Set(A);
   const max = Math.max(...A, A.length);
