@@ -1,6 +1,56 @@
 // https://programmers.co.kr/learn/courses/30/lessons/42861
+// 제출답안
+function solution(n, costs) {
+  const roots = [...Array(n)].map((_, i) => i);
+  const paths = [...costs].sort((a, b) => a[2] - b[2]);
+  
+  const find = (n) => {
+    if (roots[n] === n) return n; 
+    else return roots[n] = find(roots[n]); 
+  }
 
-// 문제를 위해 필요한 Union-Find 자료구조 => 두 노드가 연결되었는지 확인한다.
+  const changeRoot = (target, root) => {
+    for (let i = 0; i < roots.length; i++) {
+      if (roots[i] === target) roots[i] = root;
+    }
+  }
+
+  const union = (x, y) => {
+    let rootX = find(x);
+    let rootY = find(y);
+
+    if (rootX === rootY) return false;
+    const root = Math.min(rootX, rootY);
+    const target = Math.max(rootX, rootY);
+    roots[target] = root;
+    changeRoot(target, root);
+  }
+
+  const isCycle = () => {
+    const value = roots[0];
+    for (let i = 1; i < roots.length; i++) {
+      if (value !== roots[i]) return false;
+    }
+    return true;
+  }
+
+  let idx = 0;
+  let totalCost = 0;
+  while (!isCycle() && idx < paths.length) {
+    const [start, end, cost] = paths[idx];
+    if (roots[start] !== roots[end]) {
+      union(start, end);
+      totalCost += cost
+    }
+    idx++;
+  }
+
+  return totalCost;
+}
+
+
+
+// 문제를 위해 필요한 Union-Find 자료구조 기본 구현방법
 function solution(n, paths) {
   const roots = [...Array(n)].map((_, i) => i);
 
