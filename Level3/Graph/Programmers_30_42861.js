@@ -48,6 +48,38 @@ function solution(n, costs) {
   return totalCost;
 }
 
+// 모범답안
+function solution(N, costs) {
+    const q = [];
+    const root = [];
+    for(let i = 0; i < N; i++) root[i] = i;
+    costs.map(v => {
+        q.push({from:v[0], to:v[1], cost:v[2]});
+    })
+    q.sort((a, b) => b.cost - a.cost);
+    let n = 0;
+    let ans = 0;
+    while(n !== N - 1) {
+        const curr = q.pop();
+        if(find(curr.from) !== find(curr.to)) {
+            n++;
+            merge(curr.from, curr.to);
+            ans += curr.cost
+        }
+    }
+
+    function find(n) {
+        if(root[n] === n) return n;
+        return root[n] = find(root[n]);
+    }
+    function merge(_a, _b) {
+        const a = find(_a);
+        const b = find(_b);
+        root[a] = b;
+    }
+
+    return ans;
+}
 
 
 // 문제를 위해 필요한 Union-Find 자료구조 기본 구현방법
