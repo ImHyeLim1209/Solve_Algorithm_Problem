@@ -43,3 +43,6 @@ function solution (places) {
   }
   return results;
 }
+
+// 문제점 발견: 1) for문의 length제한을 -1안하면 하나 더 통과됨 2) 대각선 뒤에 존재하는 경우 위 코드로는 거르지 못함
+// ex. console.log(solution([["OOPOO", "OPOOO", "OOOOO", "OOOOO", "OOOOO"]])); => 0이 나와야 한다!
