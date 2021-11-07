@@ -36,13 +36,18 @@ function solution(n, lost, reserve) {
 //전체 학생수 - 잃어버린 학생수
 //잃어버린 학생 수 = 빌리지 못한 학생 수
 //단, 2개 보유하고 있는 사람도 하나를 잃어버린 경우가 있다 -> 이 경우는 잃어버린 학생, 보유한 학생 리스트에서 먼저 제거되어야 한다.
-function solution(n, lost, reserve) { 
-  const realLostList = lost.filter((value) => (!reserve.includes(value)));
-  let realReserveList = reserve.filter((value) => (!lost.includes(value)));
-  
-  return n - realLostList.filter(lostStudent => {
-    const lendStudent = realReserveList.find((reserveStudent) => Math.abs(reserveStudent - lostStudent) === 1);
-    if(!lendStudent)  return true; //find에서 못찾았다면 return undefined
-    realReserveList = realReserveList.filter( (reserveStudent) => (reserveStudent != lendStudent) )
+
+// 잃어버린 사람의 앞에있는 체육복을 우선으로 빌리기 때문에 sort를 해야한다. (문제에서 학생을 순서대로 안 줄수도 있음)
+function solution(n, lost, reserve) {
+  const realLost = lost.filter((v) => !reserve.includes(v)).sort((a, b) => a - b);
+  let realReserve = reserve.filter((v) => !lost.includes(v)).sort((a, b) => a - b);
+
+  return n - realLost.filter((student) => {
+    const lend = realReserve.find((v) => Math.abs(v - student) === 1);
+    if (!lend) return true;
+
+    realReserve = realReserve.filter((v) => v !== lend);
+    return false;
   }).length;
 }
+
