@@ -36,7 +36,7 @@ const solution = (new_id) => {
         .replace(/[^\w\d-_.]/g, '') //알파벳,숫자,-,_,.를 제외한 모든 문자 제거. [] 내의 ^는 제외한이란 의미이다.
         .replace(/\.{2,}/g, '.')
         .replace(/^\.|\.$/g, '') //|는 OR의 의미로 사용된다.
-        .padEnd(1, 'a') //빈문자열이라면 a대입
+        .padEnd(1, 'a') //빈문자열이라면 a대입  .replace(/^$/, 'a')  와 동일하다.
         .slice(0, 15) //15글자 제한
         .replace(/^\.|\.$/g, '') //.이 앞뒤에 있으면 제거       
     return id.padEnd(3, id[id.length-1]) //3개 이하면 채운다.
