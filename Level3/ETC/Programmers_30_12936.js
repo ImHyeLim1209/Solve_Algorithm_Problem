@@ -1,4 +1,6 @@
 //https://programmers.co.kr/learn/courses/30/lessons/12936
+// 3! = 3 * (2!) 임을 이용하여 가장 첫 번째 수부터 계산한다.
+
 //제출답안
 function solution(n, k) {
   let arr = [...Array(n + 1)].fill(false);
