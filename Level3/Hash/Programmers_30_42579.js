@@ -32,3 +32,28 @@ function solution(genres, plays) {
     return [...acc, ...hash[genre][1]];
   }, []);
 }
+
+// 제출2
+function solution(genres, plays) {
+  const N = genres.length;
+  const hash = {};
+  for (let i = 0; i < N; i++) {
+    const genre = genres[i];
+    const play = plays[i];
+
+    hash[genre] = hash[genre] ?
+      { data: [...hash[genre].data, [play, i]], sum: hash[genre].sum + play }
+      : { data: [[play, i]], sum: play };
+  }
+
+  const keys = Object.keys(hash).sort((a, b) => hash[b].sum - hash[a].sum);
+  const results = keys.map((v) => {
+    return hash[v].data.sort((a, b) => b[0] - a[0]).slice(0, 2);
+  })
+
+
+  return [...results.flat().map(v => v[1])];
+}
+
+// [4, 1, 3, 0]
+console.log(solution(["classic", "pop", "classic", "classic", "pop"], [500, 600, 150, 800, 2500]));
