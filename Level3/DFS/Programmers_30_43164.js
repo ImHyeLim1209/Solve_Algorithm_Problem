@@ -25,6 +25,30 @@ function solution(tickets) {
   return path;
 }
 
+// 약간 수정
+function solution(tickets) {
+  tickets.sort();
+
+  const N = tickets.length;
+  const isUsed = Array(N).fill(false);
+
+  const aux = (now, paths, isUsed) => {
+    if (isUsed.filter(v => v).length === N)
+      return paths;
+
+    for (let i = 0; i < N; i++) {
+      const [start, end] = tickets[i];
+
+      if (isUsed[i] || (now !== start)) continue;
+      isUsed[i] = true;
+      const result = aux(end, [...paths, end], isUsed);
+      if (result) return result;
+      isUsed[i] = false;
+    }
+  }
+  return aux('ICN', ['ICN'], isUsed);
+}
+
 // 포인트
 // 1. 티켓은 1회용이므로 한 번 사용하면 더 이상 사용할 수 없다.
 // 2. 미리 sort를 하면 dfs는 순서대로 찾는다. ex. 답이 문자열 순으로 나와야 한다면 미리 문자열순으로 sort하자
