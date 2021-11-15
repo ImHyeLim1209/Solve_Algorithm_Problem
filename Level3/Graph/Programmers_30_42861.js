@@ -48,6 +48,46 @@ function solution(n, costs) {
   return totalCost;
 }
 
+// 제출답안2 : isCycle이 없다.
+function solution(n, costs) {
+  const roots = [...Array(n)].map((_, i) => i);
+  const paths = [...costs].sort((a, b) => a[2] - b[2]);
+
+  const find = (n) => {
+    if (roots[n] === n) return n;
+    return find(roots[n]);
+  }
+
+  const changeRoot = (target, rValue) => {
+    for (let i = 0; i < roots.length; i++) {
+      if (roots[i] === target) roots[i] = rValue;
+    }
+  }
+
+  const union = (a, b) => {
+    const rootA = find(a);
+    const rootB = find(b);
+
+    if (rootA === rootB) return false;
+
+    const root = Math.min(rootA, rootB);
+    const target = Math.max(rootA, rootB);
+    roots[target] = root;
+    changeRoot(target, root);
+    return true;
+  }
+
+  let result = 0;
+  for (const path of paths) {
+    const [start, end, cost] = path;
+    const isSameRoot = union(start, end);
+
+    if (!isSameRoot) continue;
+    result += cost;
+  }
+  return result;
+}
+
 // 모범답안
 function solution(N, costs) {
     const q = [];
